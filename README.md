@@ -4,7 +4,7 @@ A C++20 implementation of a Rubik's Cube solver featuring **three interchangeabl
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 ├── Model/
@@ -34,7 +34,7 @@ A C++20 implementation of a Rubik's Cube solver featuring **three interchangeabl
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 - **Three cube representations** (3D array, 1D array, bitboard) benchmarked against each other for performance
 - **Four solving algorithms**: DFS, BFS, IDDFS, and IDA*
@@ -45,7 +45,7 @@ A C++20 implementation of a Rubik's Cube solver featuring **three interchangeabl
 
 ---
 
-## ⚙️ Design Overview
+##Design Overview
 
 ### Cube Representations
 All three representations inherit from the abstract `RubiksCube` class, which defines the move interface (`u()`, `uPrime()`, `u2()`, `l()`, `f()`, `r()`, `b()`, `d()` and their variants) as pure virtual methods. Each subclass stores and rotates the cube's 54 stickers differently:
@@ -69,7 +69,7 @@ All three representations inherit from the abstract `RubiksCube` class, which de
 
 ---
 
-## 🛠️ Build
+## Build
 
 Requires CMake ≥ 3.x and a C++20-compatible compiler.
 
@@ -81,7 +81,7 @@ cmake --build .
 
 ---
 
-## 📖 Usage
+## Usage
 
 See `main.cpp` for a full example. Typical workflow:
 
@@ -105,7 +105,7 @@ This only needs to be run once — the resulting file can be reused across sessi
 
 ---
 
-## 🔍 Benchmarking Representations
+## Benchmarking Representations
 
 Since all solvers are templated on the cube representation, you can compare performance directly:
 
