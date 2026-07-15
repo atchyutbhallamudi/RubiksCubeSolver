@@ -45,7 +45,7 @@ A C++20 implementation of a Rubik's Cube solver featuring **three interchangeabl
 
 ---
 
-##Design Overview
+## Design Overview
 
 ### Cube Representations
 All three representations inherit from the abstract `RubiksCube` class, which defines the move interface (`u()`, `uPrime()`, `u2()`, `l()`, `f()`, `r()`, `b()`, `d()` and their variants) as pure virtual methods. Each subclass stores and rotates the cube's 54 stickers differently:
@@ -117,8 +117,9 @@ DFSSolver<RubiksCubeBitboard, HashBitboard> dfsBit(cubeBit, 8);
 
 ---
 
-## 📌 Roadmap / Possible Extensions
+## Roadmap / Possible Extensions
 
 - Edge pattern database (currently only corners are used as the IDA* heuristic)
 - Combined corner + edge heuristic for tighter pruning
 - Multi-threaded pattern database generation
+- Camera-based cube scanning with OpenCV — capture a physical cube's state via webcam instead of manual input, covering grid overlay, pixel sampling per sticker, color classification, and feeding the result into setColor on the cube classes
