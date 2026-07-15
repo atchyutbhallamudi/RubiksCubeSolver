@@ -5,46 +5,67 @@
 #include<bits/stdc++.h>
 #include "../Model/RubiksCube.h"
 
-#ifndef RUBIKSCUBESOLVER_BFSSOLVER_H
-#define RUBIKSCUBESOLVER_BFSSOLVER_H
+#ifndef RUBIKS_CUBE_SOLVER_BFSSOLVER_H
+#define RUBIKS_CUBE_SOLVER_BFSSOLVER_H
 
 // Typename T: RubiksCube Representation used (3d, 1d, Bitboard)
 // Typename H: Corresponding Hash function
 
 template<typename T, typename H>
-class DFSSolver {
+class BFSSolver {
 private:
-
     vector<RubiksCube::MOVE> moves;
-    int max_search_depth;
+    unordered_map<T, bool, H> visited;
+    unordered_map<T, RubiksCube::MOVE, H> move_done;
 
-    //    DFS code to find the solution (helper function)
-    bool dfs(int dep) {
-        if (rubiksCube.isSolved()) return true;
-        if (dep > max_search_depth) return false;
-        for (int i = 0; i < 18; i++) {
-            rubiksCube.move(RubiksCube::MOVE(i));
-            moves.push_back(RubiksCube::MOVE(i));
-            if (dfs(dep + 1)) return true;
-            moves.pop_back();
-            rubiksCube.invert(RubiksCube::MOVE(i));
+    //    bfs() -> performs breadth-first-search and returns a solved Rubik's Cube
+    //    move_done[] -> Back-Pointer map as to how we reached that state
+    T bfs() {
+        queue<T> q;
+        q.push(rubiksCube);
+        visited[rubiksCube] = true;
+
+        while (!q.empty()) {
+            T node = q.front();
+            q.pop();
+            if (node.isSolved()) {
+                return node;
+            }
+            for (int i = 0; i < 18; i++) {
+                auto curr_move = RubiksCube::MOVE(i);
+                node.move(curr_move);
+                if (!visited[node]) {
+                    visited[node] = true;
+                    move_done[node] = curr_move;
+                    q.push(node);
+                }
+                node.invert(curr_move);
+            }
         }
-        return false;
+        return rubiksCube;
     }
 
 public:
     T rubiksCube;
 
-    DFSSolver(T _rubiksCube, int _max_search_depth = 8) {
+    BFSSolver(T _rubiksCube) {
         rubiksCube = _rubiksCube;
-        max_search_depth = _max_search_depth;
     }
 
+    //    Performs BFS and returns the vector of moves done to solve the cube
     vector<RubiksCube::MOVE> solve() {
-        dfs(1);
+        T solved_cube = bfs();
+        assert(solved_cube.isSolved());
+        T curr_cube = solved_cube;
+        while (!(curr_cube == rubiksCube)) {
+            RubiksCube::MOVE curr_move = move_done[curr_cube];
+            moves.push_back(curr_move);
+            curr_cube.invert(curr_move);
+        }
+        rubiksCube = solved_cube;
+        reverse(moves.begin(), moves.end());
         return moves;
     }
-
 };
 
-#endif //RUBIKSCUBESOLVER_BFSSOLVER_H
+#endif //RUBIKS_CUBE_SOLVER_BFSSOLVER_H
